@@ -2,7 +2,7 @@ services:
   - type: web
     name: iqmd-api
     runtime: docker
-    plan: starter
+    plan: free
     dockerfilePath: apps/api/Dockerfile
     dockerContext: apps/api
     healthCheckPath: /health
@@ -28,7 +28,7 @@ services:
   - type: web
     name: iqmd-web
     runtime: node
-    plan: starter
+    plan: free
     buildCommand: npm install && npm run build --workspace=apps/web
     startCommand: npm run start --workspace=apps/web -- -p $PORT
     envVars:
@@ -39,7 +39,7 @@ services:
 
 databases:
   - name: iqmd-db
-    plan: basic-256mb
+    plan: free
     databaseName: iqmd_db
     user: iqmd
     postgresMajorVersion: "16"
