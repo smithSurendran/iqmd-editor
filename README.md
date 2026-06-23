@@ -130,6 +130,50 @@ python -c "import main; print('api import ok')"
 python -m compileall -q .
 ```
 
+## Deploy On Render
+
+This repo includes a `render.yaml` Blueprint with:
+
+- `iqmd-api`: FastAPI Docker service with LibreOffice installed for PDF export
+- `iqmd-web`: Next.js web service
+- `iqmd-db`: Render PostgreSQL database
+
+Deploy steps:
+
+1. Push this repository to GitHub.
+2. In Render, choose **New +** -> **Blueprint**.
+3. Connect the GitHub repository.
+4. Select the branch with `render.yaml`.
+5. Apply the Blueprint.
+6. Wait for the database, API, and web services to deploy.
+
+The Blueprint assumes these public service URLs:
+
+```text
+https://iqmd-api.onrender.com
+https://iqmd-web.onrender.com
+```
+
+If Render assigns different URLs, update these environment variables in the Render dashboard:
+
+```text
+iqmd-api:
+FRONTEND_URL=https://your-web-service.onrender.com
+
+iqmd-web:
+NEXT_PUBLIC_API_URL=https://your-api-service.onrender.com
+```
+
+Then redeploy both services.
+
+The API pre-deploy command runs migrations and seeds the local demo users/templates:
+
+```text
+alembic upgrade head && python seed.py
+```
+
+For a real production environment, replace the seed credentials immediately after deployment.
+
 ## Notes
 
 - `.env`, `.env.local`, virtual environments, build output, `node_modules`, and `cookies.txt` are ignored by git.
