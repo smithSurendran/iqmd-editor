@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: iqmd
+      POSTGRES_PASSWORD: iqmd_dev
+      POSTGRES_DB: iqmd_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  db_test:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: iqmd
+      POSTGRES_PASSWORD: iqmd_dev
+      POSTGRES_DB: iqmd_test
+    ports:
+      - "5433:5432"
+
+volumes:
+  pgdata:
